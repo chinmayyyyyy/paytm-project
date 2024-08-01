@@ -22,6 +22,7 @@ export const RecentTransaction = ({
             </Card>
         );
     }
+    const condition = title.includes('Sent') ? 'text-red-600' : 'text-green-600';
     return (
         <Card title={title}>
             <div className="pt-2">
@@ -35,7 +36,7 @@ export const RecentTransaction = ({
                                 {new Date(t.time).toDateString()}
                             </div>
                         </div>
-                        <div className="flex flex-col text-green-600 justify-center">
+                        <div className={`flex flex-col justify-center ${condition}`}>
                             {title.includes("Sent") ? `- Rs ${t.amount / 100}` : `+ Rs ${t.amount / 100}`}
                         </div>
                     </div>
