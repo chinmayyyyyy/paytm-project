@@ -1,4 +1,10 @@
 import { Card } from "@repo/ui/card"
+enum OnRampStatus {
+    Success,
+    Failure,
+    Processing,
+  }
+  
 
 export const OnRampTransactions = ({
     transactions
@@ -6,8 +12,7 @@ export const OnRampTransactions = ({
     transactions: {
         time: Date,
         amount: number,
-        // TODO: Can the type of `status` be more specific?
-        status: string,
+        status: OnRampStatus,
         provider: string
     }[]
 }) => {
@@ -24,6 +29,9 @@ export const OnRampTransactions = ({
                 <div>
                     <div className="text-sm">
                         Received INR
+                    </div>
+                    <div className="text-sm">
+                        {t.status}
                     </div>
                     <div className="text-slate-600 text-xs">
                         {t.time.toDateString()}
