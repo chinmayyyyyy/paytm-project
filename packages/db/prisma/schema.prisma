@@ -14,16 +14,19 @@ model User {
   number            String              @unique
   password          String
   OnRampTransaction OnRampTransaction[]
-  Balance           Balance[]
+  Balance           Balance[]           @relation("UserBalance")
   sentTransfers     p2pTransfer[]       @relation(name: "FromUserRelation")
   receivedTransfers p2pTransfer[]       @relation(name: "ToUserRelation")
+  merchantTransfers UserToMerchantTransaction[] @relation(name: "UserMerchantRelation")
 }
 
 model Merchant {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  auth_type AuthType
+  id          Int                         @id @default(autoincrement())
+  email       String                      @unique
+  name        String?
+  auth_type   AuthType
+  transactions UserToMerchantTransaction[] @relation(name: "MerchantRelation")
+  Balance     Balance[]                   @relation("MerchantBalance")
 }
 
 model OnRampTransaction {
@@ -38,11 +41,13 @@ model OnRampTransaction {
 }
 
 model Balance {
-  id     Int  @id @default(autoincrement())
-  userId Int  @unique
-  amount Int
-  locked Int
-  user   User @relation(fields: [userId], references: [id])
+  id         Int       @id @default(autoincrement())
+  userId     Int?      @unique
+  merchantId Int?      @unique
+  amount     Int
+  locked     Int
+  user       User?     @relation("UserBalance", fields: [userId], references: [id], onDelete: Cascade)
+  merchant   Merchant? @relation("MerchantBalance", fields: [merchantId], references: [id], onDelete: Cascade)
 }
 
 model p2pTransfer {
@@ -55,6 +60,15 @@ model p2pTransfer {
   toUser     User         @relation(name: "ToUserRelation", fields: [toUserId], references: [id])
 }
 
+model UserToMerchantTransaction {
+  id          Int      @id @default(autoincrement())
+  amount      Int
+  timestamp   DateTime
+  userId      Int
+  user        User     @relation(name: "UserMerchantRelation", fields: [userId], references: [id])
+  merchantId  Int
+  merchant    Merchant @relation(name: "MerchantRelation", fields: [merchantId], references: [id])
+}
 
 enum AuthType {
   Google
