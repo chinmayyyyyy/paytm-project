@@ -1,49 +1,49 @@
+import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import db from "@repo/db/client";
 
-export const authOptions = {
-    providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID || "",
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
-        }),
-        
-    ],
-    callbacks: {
-      async signIn({ user, account }: {
-        user: {
-          email: string;
-          name: string
-        },
-        account: {
-          provider: "google" | "github"
-        }
-      }) {
-        console.log("hi signin")
-        if (!user || !user.email) {
-          return false;
-        }
+export const authOptions: NextAuthOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
+    }),
+  ],
+  callbacks: {
+    async signIn({ user, account }): Promise<boolean> {
+      if (!user || !user.email) {
+        return false;
+      }
 
-        await db.merchant.upsert({
-          select: {
-            id: true
-          },
-          where: {
-            email: user.email
-          },
+      try {
+        const merchant = await db.merchant.upsert({
+          where: { email: user.email },
           create: {
             email: user.email,
-            name: user.name,
-            auth_type: account.provider === "google" ? "Google" : "Github" // Use a prisma type here
+            name: user.name || "",
+            auth_type: account?.provider === "google" ? "Google" : "Github"
           },
           update: {
-            name: user.name,
-            auth_type: account.provider === "google" ? "Google" : "Github" // Use a prisma type here
+            name: user.name || "",
+            auth_type: account?.provider === "google" ? "Google" : "Github"
+          },
+          select: {
+            id: true,
           }
         });
-
+        user.id = String(merchant.id); // Ensure user object has the id
         return true;
+      } catch (error) {
+        console.error("Error in signIn callback:", error);
+        return false;
       }
     },
-    secret: process.env.NEXTAUTH_SECRET || "secret"
-  }
+    async session({ session, token, user }): Promise<typeof session> {
+      if (token.sub) {
+        session.user.id = token.sub;
+      }
+      return session;
+    }
+  },
+  secret: process.env.NEXTAUTH_SECRET || "secret"
+};
