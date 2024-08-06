@@ -1,20 +1,33 @@
-import QrReader from 'react-qr-reader'
+"use client";
+import React, { useState } from 'react';
+import { QrReader } from 'react-qr-reader';
 
-export function ScanAndPay() {
+export default function ScanAndPay() {
+  const [data, setData] = useState('No result');
 
-    handelScan(){
-        //handel scan here
+  const handleResult = (result: any, error: any) => {
+    if (result) {
+      try {
+        const parsedData = JSON.parse(result.text);
+        setData(`Merchant ID: ${parsedData.merchantId}, Merchant Name: ${parsedData.merchantName}`);
+      } catch (err) {
+        console.error("Error parsing QR code data:", err);
+      }
     }
 
-    
-    return <div>
-       <h1>Scan Merchant QR Code</h1>
+    if (error) {
+      console.info(error);
+    }
+  };
+
+  return (
+    <>
       <QrReader
-        delay={300}
-        onError={handleError}
-        onScan={handleScan}
+        onResult={handleResult}
+        constraints={{ facingMode: 'environment' }}
         style={{ width: '100%' }}
       />
-    </div>
-
+      <p>{data}</p>
+    </>
+  );
 }

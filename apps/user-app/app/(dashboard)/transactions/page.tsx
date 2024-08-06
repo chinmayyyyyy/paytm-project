@@ -1,4 +1,4 @@
-import { ScanAndPay } from "../../../components/scanAndPay"
+import  ScanAndPay  from "../../../components/scanAndPay"
 
 
 export default function() {
