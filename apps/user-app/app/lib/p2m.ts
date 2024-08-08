@@ -3,9 +3,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
 import prisma from "@repo/db/client";
-
-
-
+import redisClient from "@repo/redis-service"
 
 export async function p2mTxn(merchantId:number , amount:number ) {
     const session = await getServerSession(authOptions);
@@ -58,11 +56,25 @@ export async function p2mTxn(merchantId:number , amount:number ) {
                 merchantId : Number(toUser.id)
             }
         })
+        //sending message to redis queue
+        const message = JSON.stringify({
+            merchantId: toUser.id,
+            amount: amount,
+            message: `Paytm received ${amount} Rs from ${session.user.name}`
+        });
+
+        await redisClient.lPush('payments_queue', message);
+
+        return {
+            message: "Payment successful"
+        };
+        
     }
     catch(e){
         return{
             message: "Error while sending"
         }
     }
+
 
 }

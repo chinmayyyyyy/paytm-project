@@ -17,7 +17,8 @@
     "next-auth": "^4.24.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-qr-reader": "^3.0.0-beta-1"
+    "react-qr-reader": "^3.0.0-beta-1",
+     "@repo/redis-service": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
