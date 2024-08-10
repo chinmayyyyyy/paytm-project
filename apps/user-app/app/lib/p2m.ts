@@ -82,7 +82,7 @@ export async function p2mTxn(merchantId:number , amount:number ) {
          const message = JSON.stringify({
             merchantId: toUser.id,
             amount: amount,
-            message: `Paytm received ${amount} Rs from ${session.user.name}`
+            message: `Received ${amount} ruppes from ${session.user.name}`
         });
 
         await redisClient.lPush('payments_queue', message);

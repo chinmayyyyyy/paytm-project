@@ -1,8 +1,13 @@
-// packages/redis-service/index.js
+require('dotenv').config(); 
 const { createClient } = require('redis');
 
+
 const redisClient = createClient({
-    url: process.env.REDIS_URL || 'redis://localhost:6379'
+    password: "",
+    socket: {
+        host: 'redis-12886.c301.ap-south-1-1.ec2.redns.redis-cloud.com',
+        port: 12886
+    }
 });
 
 redisClient.on('error', (err) => {

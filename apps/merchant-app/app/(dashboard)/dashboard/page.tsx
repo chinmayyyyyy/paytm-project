@@ -1,33 +1,24 @@
 "use client"
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import connectToSocket from '../../../lib/ConnectToSocket';
+import { useSession } from 'next-auth/react';
 
 export default function Dashboard() {
+    const { data: session } = useSession();
+    const socketRef = useRef<WebSocket | null>(null);
+
     useEffect(() => {
-        const merchantId = 1005; 
-        const ws = new WebSocket(`ws://localhost:8080/?merchantId=${merchantId}`);
-
-        ws.onopen = () => {
-            console.log('WebSocket connection established');
-        };
-
-        ws.onmessage = (event) => {
-            const notification = event.data;
-            console.log('Notification received:', notification);
-            alert(notification);
-        };
-
-        ws.onclose = () => {
-            console.log('WebSocket connection closed');
-        };
-
-        ws.onerror = (error) => {
-            console.error('WebSocket error:', error);
-        };
-
+        if (session?.user?.id) {
+            connectToSocket(session.user.id, socketRef);
+        }
+        
+        // Cleanup on unmount
         return () => {
-            ws.close();
+            if (socketRef.current) {
+                socketRef.current.close();
+            }
         };
-    }, []);
+    }, [session?.user?.id]);
 
     return (
         <div>
