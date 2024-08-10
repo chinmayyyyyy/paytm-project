@@ -34,9 +34,9 @@ export default function ScanAndPay() {
     setAmount(Number(event.target.value));
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (data && amount > 0) {
-      p2mTxn(Number(data.merchantId), amount);
+          await p2mTxn(Number(data.merchantId), amount);
     } else {
       console.error("Invalid data or amount");
     }
