@@ -14,6 +14,7 @@ model User {
   number            String              @unique
   password          String
   OnRampTransaction OnRampTransaction[]
+  OfRampTransaction OfRampTransaction[]
   Balance           Balance[]           @relation("UserBalance")
   sentTransfers     p2pTransfer[]       @relation(name: "FromUserRelation")
   receivedTransfers p2pTransfer[]       @relation(name: "ToUserRelation")
@@ -38,6 +39,18 @@ model OnRampTransaction {
   startTime DateTime
   userId    Int
   user      User         @relation(fields: [userId], references: [id])
+}
+
+model OfRampTransaction {
+  id          Int              @id @default(autoincrement())
+  status      OnRampStatus
+  token       String             @unique
+  bankAccount String
+  accountNo   String
+  startTime   DateTime
+  userId      Int
+  user         User            @relation(fields: [userId], references: [id])
+  amount       Int
 }
 
 model Balance {
