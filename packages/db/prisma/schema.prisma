@@ -26,6 +26,7 @@ model Merchant {
   email       String                      @unique
   name        String?
   auth_type   AuthType
+  MerchantOfRampTransaction MerchantOfRampTransaction[]
   transactions UserToMerchantTransaction[] @relation(name: "MerchantRelation")
   Balance     Balance[]                   @relation("MerchantBalance")
 }
@@ -52,6 +53,19 @@ model OfRampTransaction {
   user         User            @relation(fields: [userId], references: [id])
   amount       Int
 }
+
+model MerchantOfRampTransaction {
+  id          Int         @id @default(autoincrement())
+  status      OnRampStatus
+  token       String      @unique
+  bankAccount String
+  accountNo   String
+  startTime   DateTime
+  merchantId  Int
+  merchant    Merchant    @relation(fields: [merchantId], references: [id])
+  amount      Int
+}
+
 
 model Balance {
   id         Int       @id @default(autoincrement())
