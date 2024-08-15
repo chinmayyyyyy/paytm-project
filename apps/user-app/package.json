@@ -9,6 +9,7 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
+    "@repo/redis-service": "*",
     "@repo/store": "*",
     "@repo/ui": "*",
     "@types/bcrypt": "^5.0.2",
@@ -18,7 +19,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-qr-reader": "^3.0.0-beta-1",
-     "@repo/redis-service": "*"
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
