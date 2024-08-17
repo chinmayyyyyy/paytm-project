@@ -24,9 +24,16 @@ const MerchantQR = () => {
 
   return (
     <div>
-      <h1>Generate QR Code</h1>
-      <button onClick={handleGenerateQRCode}>Generate QR Code</button>
-      {qrCodeURL && <img src={qrCodeURL} alt="QR Code for Payment" />}
+      {qrCodeURL ? <img src={qrCodeURL} alt="QR Code for Payment" /> :
+          <div>
+            <button
+          onClick={handleGenerateQRCode}
+          className="bg-indigo-600 text-black px-4 py-2 rounded-lg"
+         > Genrate Qr
+        </button>
+      </div> 
+    
+    }
     </div>
   );
 };

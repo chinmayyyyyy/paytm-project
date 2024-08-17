@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react';
 import connectToSocket from '../../../lib/ConnectToSocket';
 import { useSession } from 'next-auth/react';
+import MerchantDashboard from '../../../components/DashBoardComponent';
 
 export default function Dashboard() {
     const { data: session } = useSession();
@@ -21,8 +22,8 @@ export default function Dashboard() {
     }, [session?.user?.id]);
 
     return (
-        <div>
-            Dashboard
+        <div className='w-full'>
+            <MerchantDashboard/>
         </div>
     );
 }
