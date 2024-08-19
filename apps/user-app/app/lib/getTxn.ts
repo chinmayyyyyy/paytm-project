@@ -1,6 +1,12 @@
 import prisma from "@repo/db/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./auth";
 
-async function getAllTransactions(userId: number) {
+async function getAllTransactions() {
+  const session = await getServerSession(authOptions);
+  const userId = Number(session?.user?.id) ;
+
+
   const sentP2PTransfers = await prisma.p2pTransfer.findMany({
     where: { fromUserId: userId },
     select: {
@@ -46,7 +52,7 @@ async function getAllTransactions(userId: number) {
     ...receivedP2PTransfers.map(t => ({ amount: t.amount/100, date: t.timestamp, type: 'received' })),
     ...sentMerchantTransfers.map(t => ({ amount: t.amount/100, date: t.timestamp, type: 'sent' })),
     ...onRampTransactions.map(t => ({ amount: t.amount/100, date: t.startTime, type: 'received' })),
-    ...offRampTransactions.map(t => ({ amount: t.amount/100, date: t.startTime, type: 'received' })),
+    ...offRampTransactions.map(t => ({ amount: t.amount/100, date: t.startTime, type: 'sent' })),
   ];
 
   return transactions;

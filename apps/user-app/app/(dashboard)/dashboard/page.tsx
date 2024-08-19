@@ -4,7 +4,7 @@ import { BalanceCard } from "../../../components/BalanceCard";
 import { getBalance } from "../transfer/page";
 
 export default async function DashboardPage() {
-    const transaction = await getAllTransactions(1);
+    const transaction = await getAllTransactions();
     const balance = await getBalance();
 
     return (

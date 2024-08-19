@@ -3,55 +3,41 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
 import prisma from "@repo/db/client";
-import redisClient from "@repo/redis-service"
+import redisClient from "@repo/redis-service";
 
-export async function p2mTxn(merchantId:number , amount:number ) {
+export async function p2mTxn(merchantId: number, amount: number) {
     console.log("Payment started");
 
     const session = await getServerSession(authOptions);
     const from = session?.user?.id;
 
-    if(!from){
+    if (!from) {
         console.log("Invalid User");
-        return {
-            message: "Invalid User"
-        };
+        return { message: "Invalid User" };
     }
 
     const toUser = await prisma.merchant.findFirst({
-        where: {
-            id: merchantId
-        }
+        where: { id: merchantId }
     });
 
-    if(!toUser){
+    if (!toUser) {
         console.log("Merchant not found");
-        return {
-            message: "Merchant not found"
-        };
+        return { message: "Merchant not found" };
+    }
+
+    const fromBalance = await prisma.balance.findUnique({
+        where: { userId: Number(from) }
+    });
+
+    if (!fromBalance || fromBalance.amount < amount) {
+        console.log("Insufficient funds");
+        return { message: "Insufficient funds", success: false };
+
     }
 
     try {
         await prisma.$transaction(async (tx) => {
             console.log("Transaction started");
-
-            // Ensure the balance record exists for the user
-            let fromBalance = await tx.balance.findUnique({
-                where: { userId: Number(from) }
-            });
-
-
-            if (fromBalance.amount < amount) {
-                console.log("Insufficient funds");
-                throw new Error('Insufficient funds');
-            }
-
-            console.log(`User has sufficient funds: ${fromBalance.amount}`);
-
-            // Ensure the balance record exists for the merchant
-            let toBalance = await tx.balance.findUnique({
-                where: { userId: toUser.id }
-            });
 
             // Decrement balance from the user
             await tx.balance.update({
@@ -62,7 +48,7 @@ export async function p2mTxn(merchantId:number , amount:number ) {
 
             // Increment balance for the merchant
             await tx.balance.update({
-                where: { merchantId: toUser.id },
+                where: { userId: toUser.id },
                 data: { amount: { increment: amount } }
             });
             console.log(`Merchant balance incremented by: ${amount}`);
@@ -78,24 +64,20 @@ export async function p2mTxn(merchantId:number , amount:number ) {
             }
         });
         console.log("Transaction record created");
-         //sending message to redis queue
-         const message = JSON.stringify({
+
+        // Send a message to the Redis queue
+        const message = JSON.stringify({
             merchantId: toUser.id,
             amount: amount,
-            message: `Received ${amount} ruppes from ${session.user.name}`
+            message: `Received ${amount} rupees from ${session.user.name}`
         });
 
         await redisClient.lPush('payments_queue', message);
 
         console.log("Transaction Successful");
-
-        return {
-            message: "Payment successful"
-        };
-    } catch(e) {
+        return { message: "Payment successful" };
+    } catch (e: any) {
         console.error("Error during transaction:", e.message);
-        return {
-            message: `Error while sending: ${e.message}`
-        };
+        return { message: `Error while sending: ${e.message}` };
     }
 }
