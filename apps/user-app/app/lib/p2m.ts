@@ -48,7 +48,7 @@ export async function p2mTxn(merchantId: number, amount: number) {
 
             // Increment balance for the merchant
             await tx.balance.update({
-                where: { userId: toUser.id },
+                where: { merchantId: toUser.id },
                 data: { amount: { increment: amount } }
             });
             console.log(`Merchant balance incremented by: ${amount}`);
@@ -68,8 +68,8 @@ export async function p2mTxn(merchantId: number, amount: number) {
         // Send a message to the Redis queue
         const message = JSON.stringify({
             merchantId: toUser.id,
-            amount: amount,
-            message: `Received ${amount} rupees from ${session.user.name}`
+            amount: amount/100,
+            message: `Received ${amount/100} rupees from ${session.user.name}`
         });
 
         await redisClient.lPush('payments_queue', message);

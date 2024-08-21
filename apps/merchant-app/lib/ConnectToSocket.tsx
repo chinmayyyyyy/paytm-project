@@ -1,6 +1,7 @@
+import { useEffect, useRef } from 'react';
 import VoiceAck from '../components/voiceAck';
 import { MutableRefObject } from 'react';
-
+import { Bounce, toast } from 'react-toastify';
 export default function connectToSocket(merchantId: string, socketRef: MutableRefObject<WebSocket | null>) {
     // Check if the WebSocket connection already exists
     if (socketRef.current) {
@@ -18,7 +19,17 @@ export default function connectToSocket(merchantId: string, socketRef: MutableRe
         const notification = event.data;
         console.log('Notification received:', notification);
         VoiceAck(notification);
-        alert(notification);
+        toast.success(notification, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition : Bounce
+        });
     };
 
     ws.onclose = () => {
@@ -33,3 +44,4 @@ export default function connectToSocket(merchantId: string, socketRef: MutableRe
     // Store the WebSocket instance in the ref
     socketRef.current = ws;
 }
+
