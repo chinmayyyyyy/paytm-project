@@ -1,3 +1,4 @@
+import { AppbarClient } from "../../components/AppbarClient";
 import { SidebarItem } from "../../components/SidebarItem";
 
 export default function Layout({
@@ -5,7 +6,8 @@ export default function Layout({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
-  return (
+  return ( <div>
+    <AppbarClient />
     <div className="flex">
         <div className="w-72 border-r border-slate-300 min-h-screen pt-28">
             <div>
@@ -18,6 +20,7 @@ export default function Layout({
             </div>
         </div>
             {children}
+      </div>
     </div>
   );
 }
