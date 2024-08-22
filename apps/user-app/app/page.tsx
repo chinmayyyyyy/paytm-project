@@ -4,7 +4,8 @@ import Feature from "../components/Feature";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import { signIn , signOut  } from "next-auth/react";
-import Footer from "../components/Footer";
+import Footer from "@repo/ui/Footer";
+
 
 export default  function Page() {
     const session = useSession();

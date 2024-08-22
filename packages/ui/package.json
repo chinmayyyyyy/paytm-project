@@ -10,7 +10,8 @@
     "./center": "./src/Center.tsx",
     "./select": "./src/Select.tsx",
     "./textinput": "./src/TextInput.tsx",
-    "./SidebarItem": "./src/Sidebaritem.tsx"
+    "./SidebarItem": "./src/Sidebaritem.tsx",
+    "./Footer": "./src/Footer.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
