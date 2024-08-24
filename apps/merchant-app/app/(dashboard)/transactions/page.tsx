@@ -1,8 +1,16 @@
 import TransactionGraph from "../../../components/TransactionGraph";
 import { getMerchantTransactions, getBalance } from "../../../lib/getMerchantTxn";
 import { BalanceCard } from "../../../components/BalanceCard";
+import isAuth from "../isAuth";
+import { redirect } from "next/navigation";
 
 export default async function MerchantDashboard() {
+
+  const auth = await isAuth();
+  if(!auth){
+      redirect('auth/api/signin')
+  }
+
   const transactions = await getMerchantTransactions();
   const balance = await getBalance();
 

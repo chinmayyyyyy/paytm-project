@@ -1,8 +1,15 @@
+import { redirect } from 'next/navigation';
 import MerchantWithdrawMoney from '../../../components/MerchantWithdrawMoney';
 import { PreviousTxn } from '../../../components/PreviousTxn';
 import getOfRampTxn from '../../../lib/getOfRampTxn';
+import isAuth from '../isAuth';
 
 export default async function Page() {
+
+    const auth = await isAuth();
+    if(!auth){
+        redirect('api/auth/signin')
+    }
     const transactions = await getOfRampTxn();
 
     return (
