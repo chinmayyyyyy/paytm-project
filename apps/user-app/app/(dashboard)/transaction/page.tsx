@@ -1,8 +1,14 @@
 import getAllTransactions from "../../lib/getTxn"
-
+import isAuth from "../isAuth";
+import { redirect } from 'next/navigation';
 
 export default async function (){
 
+  const user = await isAuth(); // Check if the user is authenticated
+  if(!user) {
+      console.log('User not authenticated');
+      redirect('api/auth/signin');
+  }
     const transactions = await getAllTransactions();
     
     return <div className="bg-white p-6 rounded-lg w-full m-20 p-5 shadow-lg">

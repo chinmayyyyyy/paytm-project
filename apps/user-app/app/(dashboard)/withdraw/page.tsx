@@ -1,7 +1,15 @@
-import { getBalance } from "../transfer/page"
+import getBalance from "../../lib/getBalance";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { WithdrawMoney } from "../../../components/WithdrawCard";
+import isAuth from "../isAuth";
+import { redirect } from 'next/navigation'
 export default async function() {
+    const user = await isAuth(); // Check if the user is authenticated
+    if(!user) {
+        console.log('User not authenticated');
+        redirect('api/auth/signin');
+    }
+
     const balance = await getBalance();
 
 

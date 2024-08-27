@@ -1,11 +1,18 @@
 import TransactionGraph from "../../../components/TransactionGraph";
 import getAllTransactions from "../../lib/getTxn";
 import { BalanceCard } from "../../../components/BalanceCard";
-import { getBalance } from "../transfer/page";
+import getBalance from "../../lib/getBalance";
+import isAuth from "../isAuth";
+import { redirect } from 'next/navigation'
 
-export default async function DashboardPage() {
-    const transaction = await getAllTransactions();
-    const balance = await getBalance();
+async function DashboardPage() {
+    const user = await isAuth(); // Check if the user is authenticated
+    if(!user) {
+        console.log('User not authenticated');
+        redirect('api/auth/signin');
+    }
+    const transaction = await getAllTransactions(); // Fetch all transactions
+    const balance = await getBalance(); // Fetch the user's balance
 
     return (
         <div className="w-full p-5 min-h-screen">
@@ -29,3 +36,5 @@ export default async function DashboardPage() {
         </div>
     );
 }
+
+export default DashboardPage;
