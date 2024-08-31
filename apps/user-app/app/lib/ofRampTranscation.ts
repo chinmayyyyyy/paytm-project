@@ -5,8 +5,8 @@ import { authOptions } from "./auth";
 
 
 export async function createOfRampTransaction(
-    bankAccount : String ,
-    accountNo : String ,
+    bankAccount : string ,
+    accountNo : string ,
     ifsc : String ,
     amount : number
 ){

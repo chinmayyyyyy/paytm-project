@@ -1,8 +1,12 @@
 'use client';
-
+import { FC } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-const TransactionGraph = ({ transactions }) => {
+interface TransactionGraphProps {
+  transactions: any[]; 
+}
+
+const TransactionGraph: FC<TransactionGraphProps> = ({ transactions }) => {
   return (
     <div style={{ width: '100%', height: 400, backgroundColor: '#fff', padding: '1rem', borderRadius: '8px' }}>
       <ResponsiveContainer width="100%" height="100%">

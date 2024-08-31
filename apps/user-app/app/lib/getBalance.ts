@@ -2,6 +2,11 @@ import { getServerSession } from "next-auth";
 import prisma from "../../../../packages/db";
 import { authOptions } from "./auth";
 
+interface Balance {
+    amount: number;
+    locked: number;
+}
+
 export default async function getBalance(): Promise<Balance> {
 
     const session = await getServerSession(authOptions);
