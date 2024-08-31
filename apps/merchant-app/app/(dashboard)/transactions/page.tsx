@@ -36,7 +36,7 @@ export default async function MerchantDashboard() {
           <h3 className="text-xl font-semibold text-gray-700 mb-4">Recent Transactions</h3>
           <ul className="divide-y divide-gray-200">
             {transactions.length > 0 ? (
-              transactions.toReversed().map((txn, index) => (
+              transactions.reverse().map((txn, index) => (
                 <li key={index} className="py-4 flex justify-between items-center">
                   <div>
                     <p className="text-green-400">₹{txn.amount }</p>

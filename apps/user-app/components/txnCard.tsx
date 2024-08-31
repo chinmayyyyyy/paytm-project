@@ -5,46 +5,47 @@ import { RecentTransaction } from "./recentTransaction";
 
 
 async function getSentTxn() {
-    // fetch the data here 
     const session = await getServerSession(authOptions);
     const txns = await prisma.p2pTransfer.findMany({
-            where : {
-                    fromUserId : Number(session?.user?.id)
-            },
-            include: {
-                    toUser: true
-                }
+        where: {
+            fromUserId: Number(session?.user?.id)
+        },
+        include: {
+            toUser: true
+        }
     });
     return txns.map(t => ({
-            time: t.timestamp,
-            amount: t.amount,
-            toUser: {
-                    id: t.toUser.id,
-                    name: t.toUser.name
-                }
-    }))
-    
+        id: t.id, // Add this line
+        time: t.timestamp,
+        amount: t.amount,
+        toUser: {
+            id: t.toUser.id,
+            name: t.toUser.name ?? ""
+        }
+    }));
 }
+
 async function getRecivedTxn() {
-    // fetch the data here 
     const session = await getServerSession(authOptions);
     const txns = await prisma.p2pTransfer.findMany({
-            where : {
-                    toUserId : Number(session?.user?.id)
-            },
-            include: {
-                    fromUser: true
-                }
+        where: {
+            toUserId: Number(session?.user?.id)
+        },
+        include: {
+            fromUser: true
+        }
     });
     return txns.map(t => ({
-            time: t.timestamp,
-            amount: t.amount,
-            fromUser:  {
-                    id: t.fromUser.id,
-                    name: t.fromUser.name
-                }
-    }))
+        id: t.id, // Add this line
+        time: t.timestamp,
+        amount: t.amount,
+        fromUser: {
+            id: t.fromUser.id,
+            name: t.fromUser.name ?? ""
+        }
+    }));
 }
+
 
 export default async function(){
     
