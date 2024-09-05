@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate --schema=../../packages/db/prisma && next build",
+    "build": "npx prisma generate --schema=../../packages/db/prisma/schema.prisma && next build",
     "start": "next start",
     "lint": "eslint . --max-warnings 0"
   },
