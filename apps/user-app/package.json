@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --port 3001",
     "type-check": "tsc --noEmit",
-    "build": "next build",
+    "build": "prisma generate --schema=../../packages/db/prisma && next build",
     "start": "next start",
     "lint": "eslint . --max-warnings 0"
   },
