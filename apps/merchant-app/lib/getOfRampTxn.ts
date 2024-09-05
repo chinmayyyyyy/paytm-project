@@ -22,5 +22,5 @@ export default async function getOfRampTxn() {
         },
     });
 
-    return txn;
+    return txn as any;
 }
