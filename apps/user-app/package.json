@@ -5,11 +5,7 @@
   "scripts": {
     "dev": "next dev --port 3001",
     "type-check": "tsc --noEmit",
-<<<<<<< HEAD
-    "build": "prisma generate --schema=../../packages/db/prisma && next build",
-=======
     "build": "npx prisma generate --schema=../../packages/db/prisma/schema.prisma && next build",
->>>>>>> f5643a2758410f999bddf9f66845b4f5879ae885
     "start": "next start",
     "lint": "eslint . --max-warnings 0"
   },
