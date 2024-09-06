@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { Providers } from "../provider";
 import { Appbar } from "@repo/ui/appbar";
 import { AppbarMerchant } from "../components/AppbarMerchent";
-
+import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
