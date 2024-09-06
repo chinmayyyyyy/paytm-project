@@ -1,4 +1,4 @@
-import { SidebarItem } from "@repo/ui/SidebarItem";
+import { SidebarItem } from "../../components/SideBar";
 import { AppbarMerchant } from "../../components/AppbarMerchent";
 
 export default function Layout({
