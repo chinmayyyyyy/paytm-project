@@ -9,7 +9,7 @@ export default function connectToSocket(merchantId: string, socketRef: MutableRe
         return;
     }
 
-    const ws = new WebSocket(`ws://localhost:8080/?merchantId=${merchantId}`);
+    const ws = new WebSocket(`wss://paytm-project-8oxu.onrender.com/?merchantId=${merchantId}`);
 
     ws.onopen = () => {
         console.log('WebSocket connection established');
