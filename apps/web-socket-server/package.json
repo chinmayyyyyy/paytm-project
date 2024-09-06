@@ -12,6 +12,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "nodemon": "^3.1.4",
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "@repo/redis-service": "*"
   }
 }

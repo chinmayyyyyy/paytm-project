@@ -7,7 +7,7 @@ const merchantConnections = {};
 // WebSocket connection handling
 wss.on('connection', (ws, req) => {
     try {
-        const url = new URL(req.url, `http://${req.headers.host}`);
+        const url = new URL(req.url, `https://${req.headers.host}`);
         const merchantId = url.searchParams.get('merchantId');
 
         if (merchantId) {
