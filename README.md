@@ -1,19 +1,42 @@
-- Clone the repo
 
-```jsx
-git clone this repo
-```
+Visit the deployed versions:
+   - [Merchant App](https://paytm-project-merchant-app-eta.vercel.app/)
+   - [User App](https://paytm-project-user-app-wallet.vercel.app/)
 
-- npm install
-- Run postgres either locally or on the cloud (neon.tech)
+1. Clone the repository:
 
-```jsx
-docker run  -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
-```
+   ```bash
+   git clone https://github.com/chinmayyyyyy/paytm-project.git
+   ```
 
-- Update .env files everywhere with the right db url
-- Go to `packages/db`
-    - npx prisma migrate dev
-    - npx prisma db seed
-- Go to `apps/user-app` , run `npm run dev`
-- Try logging in using phone - 1111111111 , password - alice (See `seed.ts`)
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Run PostgreSQL either locally or on the cloud (e.g., [neon.tech](https://neon.tech/)):
+
+   ```bash
+   docker run -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
+   ```
+
+4. Update `.env` files everywhere with the correct database URL.
+
+5. Go to the `packages/db` directory and run:
+
+   ```bash
+   npx prisma migrate dev
+   npx prisma db seed
+   ```
+
+6. Start the User app:
+
+   ```bash
+   cd apps/user-app
+   npm run dev
+   ```
+
+7. Try logging in using the following credentials (pre-seeded data):
+   - Phone: **1111111111**
+   - Password: **alice**
