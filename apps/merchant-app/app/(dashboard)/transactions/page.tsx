@@ -39,7 +39,7 @@ export default async function MerchantDashboard() {
               transactions.reverse().map((txn, index) => (
                 <li key={index} className="py-4 flex justify-between items-center">
                   <div>
-                    <p className="text-green-400">₹{txn.amount }</p>
+                    <p className="text-green-400">₹{txn.amount/100 }</p>
                     <p className="text-gray-600 text-sm">{new Date(txn.timestamp).toLocaleString()}</p>
                   </div>
                   <div>
