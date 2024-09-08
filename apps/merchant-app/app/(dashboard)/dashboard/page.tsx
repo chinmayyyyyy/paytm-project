@@ -8,14 +8,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import {redirect} from 'next/navigation';
 
 export default function Dashboard() {
-    const { data: session } = useSession();
+   const { data: session, status } = useSession();
     const socketRef = useRef<WebSocket | null>(null);
 
-    useEffect(() => {
-        if (session?.user?.id) {
+      useEffect(() => {
+        if (status === 'authenticated' && session?.user?.id) {
             connectToSocket(session.user.id, socketRef);
         }
-        if(!session?.user?.id) {
+        if (status === 'unauthenticated') {
             console.log('User not authenticated');
             redirect('api/auth/signin');
         }
@@ -26,7 +26,7 @@ export default function Dashboard() {
                 socketRef.current.close();
             }
         };
-    }, [session?.user?.id]);
+    }, [session?.user?.id, status]);
 
     return (
         <div className="w-full">
