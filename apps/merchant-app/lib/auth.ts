@@ -31,13 +31,21 @@ export const authOptions: NextAuthOptions = {
             id: true,
           }
         });
-        const balance = await db.balance.create({
-                    data: {
-                        amount: 2000,
-                        locked : 0,
-                        merchantId: merchant.id ,
-                    }
-              }) 
+         const existingBalance = await db.balance.findUnique({
+          where: { merchantId: merchant.id }
+        });
+
+        // Only create balance if it doesn't exist
+        if (!existingBalance) {
+          await db.balance.create({
+            data: {
+              amount: 2000,
+              locked: 0,
+              merchantId: merchant.id,
+            },
+          });
+        }
+        
         user.id = String(merchant.id); // Ensure user object has the id
         return true;
       } catch (error) {
