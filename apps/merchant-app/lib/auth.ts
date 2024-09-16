@@ -31,6 +31,13 @@ export const authOptions: NextAuthOptions = {
             id: true,
           }
         });
+        const balance = await db.balance.create({
+                    data: {
+                        amount: 2000,
+                        locked : 0,
+                        merchantId: merchant.id ,
+                    }
+              }) 
         user.id = String(merchant.id); // Ensure user object has the id
         return true;
       } catch (error) {
