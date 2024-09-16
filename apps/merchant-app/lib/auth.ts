@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
                     data: {
                         amount: 2000,
                         locked : 0,
-                        userId: merchant.id ,
+                        merchantId: merchant.id ,
                     }
               }) 
         user.id = String(merchant.id); // Ensure user object has the id
